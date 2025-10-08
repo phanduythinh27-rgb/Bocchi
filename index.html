@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Tìm kiếm trong trang (có ảnh)</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f7f7f7;
+    margin-top: 50px;
+  }
+  #searchBox {
+    padding: 10px;
+    width: 300px;
+    border: 2px solid #ff7f50;
+    border-radius: 20px;
+    outline: none;
+  }
+  .content {
+    margin-top: 30px;
+    text-align: left;
+    display: inline-block;
+    width: 80%;
+    max-width: 600px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  .highlight {
+    background-color: yellow;
+    font-weight: bold;
+  }
+  img {
+    width: 200px;
+    margin: 10px 0;
+    border-radius: 10px;
+  }
+</style>
+</head>
+<body>
+
+<h2>🔍 Tìm kiếm Bocchi</h2>
+<input type="text" id="searchBox" placeholder="Nhập từ khóa..." onkeyup="searchText()">
+
+<div class="content" id="textContent">
+  <p>Bocchi the Rock là một bộ anime nổi tiếng.</p>
+  <p>Hitori Gotoh là nhân vật chính, chơi guitar.</p>
+  <img src="https://media.tenor.com/7UMTpFqLNIAAAAAM/bocchi-the-rock-cupcake.gif" alt="Bocchi ăn cupcake">
+  <p>Phim có nhiều khoảnh khắc hài hước và cảm động.</p>
+  <img src="https://i.postimg.cc/521VCCVr/base64-1674813540525218202509-1675048189624-1675048190109202923101-1675052239185-1675052239262159012.png" alt="Bocchi đang chơi guitar">
+</div>
+
+<script>
+function searchText() {
+  let input = document.getElementById("searchBox").value.toLowerCase();
+  let content = document.getElementById("textContent");
+  let paragraphs = content.getElementsByTagName("p");
+  let images = content.getElementsByTagName("img");
+
+  // Tìm trong đoạn văn
+  for (let p of paragraphs) {
+    let text = p.textContent.toLowerCase();
+    if (text.includes(input) && input !== "") {
+      let regex = new RegExp(`(${input})`, "gi");
+      p.innerHTML = p.textContent.replace(regex, "<span class='highlight'>$1</span>");
+      p.style.display = "block";
+    } else if (input === "") {
+      p.innerHTML = p.textContent;
+      p.style.display = "block";
+    } else {
+      p.style.display = "none";
+    }
+  }
+
+  // Tìm trong ảnh (alt hoặc src)
+  for (let img of images) {
+    let alt = img.alt.toLowerCase();
+    let src = img.src.toLowerCase();
+    if ((alt.includes(input) || src.includes(input)) && input !== "") {
+      img.style.display = "block";
+    } else if (input === "") {
+      img.style.display = "block";
+    } else {
+      img.style.display = "none";
+    }
+  }
+}
+</script>
+
+</body>
+</html>
